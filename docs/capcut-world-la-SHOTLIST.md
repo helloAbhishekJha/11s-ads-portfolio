@@ -4,6 +4,8 @@
 **Target runtime:** **35s** (safe inside **15–60s**) · **9:16 · 1080×1920**  
 **Theme:** #1000WaysToCCW — wildest way to **arrive** at CapCut World LA (Oct 24 event)
 
+**Do not:** Enter CCW by diving through a **monitor, laptop, or phone screen** (crowded trope). Portal = **tome / mirror / coffin / flame / door** — not “CapCut UI on a display.” Social BTS **screen recording of the timeline** is still fine.
+
 ---
 
 ## Bin structure (CapCut media folder)
@@ -23,8 +25,8 @@ capcut-ccw-oct26/
 
 | ID | In | Dur | Source asset | Action in CapCut | CapCut AI / Skills |
 |----|-----|-----|--------------|------------------|-------------------|
-| A1 | 0:00 | 3s | `MVP-1-hero.mp4` (first 3s) or Mac `MVP-1-source-full.mp4` | Hard cut in on eyes/monitor; speed ramp 100→105% on hit | — |
-| A2 | 0:03 | 4s | Same file (3–7s) or alternate angle from full source | Picture-in-picture: fake “CCW LA ticket” title overlay | Text template |
+| A1 | 0:00 | 3s | `MVP-1-hero.mp4` (first 3s) or Mac `MVP-1-source-full.mp4` | Hard cut on **eyes / candle / desk claws** — **crop out monitor** if source has one; speed ramp 100→105% | — |
+| A2 | 0:03 | 4s | Same file (3–7s) or parchment plate | **Physical** wax-sealed **CCW invite** or mirror reflection of stage — **no laptop ticket UI** | Text on parchment template |
 | A3 | 0:07 | 2s | `day12-veo-envato.mp4` or portal still | Glitch → match cut to portal swirl | Optional **image-to-video** portal (low credits) |
 | B1 | 0:09 | 5s | **Skills → WELCOME TO CCW** card output | Insert event card; trim to best 5s | **Required** skill beat |
 | B2 | 0:14 | 4s | `reels/day7-reel.mp4` (crowd/light slice) **or** fresh CapCut t2v “LA stage crowd” | Color grade to match DH | 1× t2v only if no stage plate |
