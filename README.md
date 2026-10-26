@@ -24,7 +24,9 @@ cd portfolio/11s-ads
 npx vercel --yes
 ```
 
-**Live:** https://11s-ads.vercel.app → paste into Chroma **portfolio website** field.
+**Live:** https://videoads.abhishekjha.com (custom domain; `11s-ads.vercel.app` redirects) → paste into Chroma **portfolio website** field.
+
+Domain setup: [docs/DOMAIN-SETUP.md](./docs/DOMAIN-SETUP.md).
 
 **GitHub Pages:** Push `portfolio/11s-ads/` to a public repo → enable Pages on `/` or use `helloAbhishekJha.github.io/11s-ads/`.
 
