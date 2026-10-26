@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="AI-assisted 11-second performance ads — Veo, CapCut, Kling. Portfolio of Abhishek Jha."/>
-  <title>11s Ads — AI Performance Reels | Abhishek Jha</title>
+  <meta name="description" content="Abhishek Jha — AI video portfolio: 11-second performance ads, OTT-style films &amp; series, and product / brand work. Veo, CapCut, Kling."/>
+  <link rel="canonical" href="https://videoads.abhishekjha.com/"/>
+  <meta property="og:title" content="Video Ads &amp; AI Film — Abhishek Jha"/>
+  <meta property="og:description" content="11s performance ads, films &amp; OTT-style series, and other AI-assisted video work."/>
+  <meta property="og:url" content="https://videoads.abhishekjha.com/"/>
+  <meta property="og:type" content="website"/>
+  <title>Video Ads &amp; AI Film — Abhishek Jha</title>
   <style>
     :root {
       --bg: #0a0a0f;
@@ -27,13 +32,14 @@
     header {
       border-bottom: 1px solid #2a2a36;
       padding-bottom: 24px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
     h1 { font-size: clamp(1.75rem, 4vw, 2.25rem); margin: 0 0 8px; letter-spacing: -0.02em; }
-    .tagline { color: var(--muted); font-size: 1.05rem; max-width: 42rem; }
+    .tagline { color: var(--muted); font-size: 1.05rem; max-width: 44rem; }
     .pill {
       display: inline-block;
       margin-top: 12px;
+      margin-right: 8px;
       padding: 6px 12px;
       border-radius: 999px;
       font-size: 0.8rem;
@@ -41,7 +47,31 @@
       background: linear-gradient(90deg, rgba(168,85,247,.25), rgba(34,211,238,.2));
       border: 1px solid #3f3f50;
     }
-    h2 { font-size: 1.15rem; margin: 32px 0 16px; color: var(--accent2); }
+    h2 { font-size: 1.15rem; margin: 28px 0 14px; color: var(--accent2); }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .filters button {
+      font: inherit;
+      cursor: pointer;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #3f3f50;
+      background: #1a1a24;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .filters button:hover { border-color: #5b5b6e; color: var(--text); }
+    .filters button.active {
+      border-color: var(--accent);
+      color: var(--text);
+      background: rgba(168,85,247,.15);
+    }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -53,6 +83,7 @@
       border-radius: 14px;
       overflow: hidden;
     }
+    .card.is-hidden { display: none; }
     .card video {
       width: 100%;
       display: block;
@@ -64,6 +95,15 @@
     .card h3 { margin: 0 0 6px; font-size: 1rem; }
     .card p { margin: 0; font-size: 0.85rem; color: var(--muted); }
     .meta { font-size: 0.75rem; color: #6b7280; margin-top: 8px; }
+    .cat-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
     .links { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
     .links a {
       color: var(--accent2);
@@ -96,102 +136,122 @@
       margin-top: 10px;
     }
     .link-card a.stretch:hover { text-decoration: underline; }
+    .empty-hint {
+      display: none;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin: 12px 0 0;
+    }
+    .empty-hint.visible { display: block; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>11-second performance ads</h1>
+      <h1>Video ads &amp; AI film</h1>
       <p class="tagline">
-        AI-assisted vertical spots for social &amp; paid — scripted hooks, Veo/Flow footage, CapCut finish, human QC.
+        Performance spots, OTT-style series, and brand video — AI-assisted pipelines with human QC.
         <strong>Abhishek Jha</strong> · AI film &amp; agent engineering.
       </p>
-      <span class="pill">~11s · 9:16 · performance / spec ads</span>
+      <span class="pill">11s ads · 9:16 reels</span>
+      <span class="pill">Films &amp; OTT</span>
+      <span class="pill">Demos &amp; brand</span>
     </header>
 
     <div class="spec">
-      <strong>Format:</strong> 8–15s loops · hook in first 2s · watermark + brand bar · disclosure-friendly AI pipeline.
-      <strong>Tools:</strong> Google Veo / Flow · CapCut · Kling · ElevenLabs voice when needed.
+      <strong>11s ads:</strong> 8–15s hooks · paid social / spec · Veo / Flow · CapCut finish.
+      <strong>Longer work:</strong> micro-drama &amp; trailers · vertical + landscape cuts.
+      <strong>Tools:</strong> Veo · CapCut · Kling · ElevenLabs when needed.
     </div>
 
-    <h2>Selected reels</h2>
-    <div class="grid">
-      <article class="card">
+    <h2>Portfolio</h2>
+    <nav class="filters" aria-label="Filter by category">
+      <button type="button" class="filter active" data-filter="all">All</button>
+      <button type="button" class="filter" data-filter="ads">11s Ads</button>
+      <button type="button" class="filter" data-filter="films">Films &amp; OTT</button>
+      <button type="button" class="filter" data-filter="other">Other Work</button>
+    </nav>
+    <p class="empty-hint" id="empty-hint">No items in this category yet — check back as new cuts ship.</p>
+
+    <div class="grid" id="portfolio-grid">
+      <article class="card" data-category="ads">
         <video controls playsinline preload="metadata" poster="">
           <source src="samples/MVP-1-hero.mp4" type="video/mp4"/>
         </video>
         <div class="body">
+          <span class="cat-label">11s Ads</span>
           <h3>Dracula Hunters — teaser cut</h3>
           <p>Horror / IP spec · vertical hero trim from long-form AI trailer.</p>
           <p class="meta"><a href="https://contra.com/community/nOkprStV-series-title-dracula-hunters-the-last" style="color: var(--accent2);">Contra series →</a> · ~6s hero · 11s paid variants</p>
         </div>
       </article>
-      <article class="card">
+      <article class="card" data-category="ads">
         <div class="body" style="min-height: 200px; display: flex; flex-direction: column; justify-content: center;">
+          <span class="cat-label">11s Ads</span>
           <h3>Spec ad — slot 2</h3>
           <p>CapCut World LA / Agoly 11s — add <code>samples/spec-ad-02.mp4</code> when ready.</p>
           <p class="meta">Chroma Ad category · consumer / entertainment</p>
         </div>
       </article>
-      <article class="card">
-        <div class="body" style="padding-top: 48px; padding-bottom: 48px; text-align: center;">
-          <h3>Half Past — brand film</h3>
-          <p>Lovable restaurant experience (long-form reference).</p>
-          <p class="meta"><a href="https://halfpastrestraunt.lovable.app" style="color: var(--accent2);">Live project →</a></p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="body" style="padding-top: 48px; padding-bottom: 48px; text-align: center;">
-          <h3>LightningGen — product demo</h3>
-          <p>AWS Bedrock / serverless (engineering credibility).</p>
-          <p class="meta"><a href="https://www.youtube.com/watch?v=OupVlAo-dq0" style="color: var(--accent2);">YouTube →</a></p>
-        </div>
-      </article>
-    </div>
-
-    <h2>Series &amp; ad playlists</h2>
-    <div class="grid">
-      <article class="card link-card">
+      <article class="card link-card" data-category="films">
         <div class="body">
+          <span class="cat-label">Films &amp; OTT</span>
           <h3>Dracula Hunters — The Last</h3>
           <p>Micro-drama series on Contra · horror / AI film lane.</p>
           <a class="stretch" href="https://contra.com/community/nOkprStV-series-title-dracula-hunters-the-last" rel="noopener">Watch series on Contra →</a>
         </div>
       </article>
-      <article class="card link-card">
+      <article class="card" data-category="films">
+        <div class="body" style="padding-top: 48px; padding-bottom: 48px; text-align: center;">
+          <span class="cat-label">Films &amp; OTT</span>
+          <h3>Half Past — brand film</h3>
+          <p>Lovable restaurant experience (long-form reference).</p>
+          <p class="meta"><a href="https://halfpastrestraunt.lovable.app" style="color: var(--accent2);">Live project →</a></p>
+        </div>
+      </article>
+      <article class="card link-card" data-category="ads">
         <div class="body">
+          <span class="cat-label">11s Ads</span>
           <h3>Oral care — 11s ads</h3>
           <p>Vertical performance spots · playlist.</p>
           <a class="stretch" href="https://www.youtube.com/watch?v=WxtlKqkCukI&amp;list=PLhViT_kHN8M6QIhtKVncLHnOG59hC4BZK" rel="noopener">YouTube playlist →</a>
         </div>
       </article>
-      <article class="card link-card">
+      <article class="card link-card" data-category="ads">
         <div class="body">
+          <span class="cat-label">11s Ads</span>
           <h3>Heaven&apos;s Perfume — ads</h3>
           <p>Fragrance spec / paid-social cuts.</p>
           <a class="stretch" href="https://www.youtube.com/watch?v=evM4_KDCzE0&amp;list=PLhViT_kHN8M7t_cySJnUbvZ4xwli6Snub" rel="noopener">YouTube playlist →</a>
         </div>
       </article>
-      <article class="card link-card">
+      <article class="card link-card" data-category="ads">
         <div class="body">
+          <span class="cat-label">11s Ads</span>
           <h3>Angel Baby</h3>
           <p>Brand / emotional vertical spot.</p>
           <a class="stretch" href="https://lnkd.in/p/dquXTyvG" rel="noopener">LinkedIn video →</a>
         </div>
       </article>
-    </div>
-
-    <h2>Profile &amp; avatar</h2>
-    <div class="grid">
-      <article class="card link-card">
+      <article class="card" data-category="other">
+        <div class="body" style="padding-top: 48px; padding-bottom: 48px; text-align: center;">
+          <span class="cat-label">Other Work</span>
+          <h3>LightningGen — product demo</h3>
+          <p>AWS Bedrock / serverless (engineering credibility).</p>
+          <p class="meta"><a href="https://www.youtube.com/watch?v=OupVlAo-dq0" style="color: var(--accent2);">YouTube →</a></p>
+        </div>
+      </article>
+      <article class="card link-card" data-category="ads">
         <div class="body">
+          <span class="cat-label">11s Ads</span>
           <h3>AI avatar intro</h3>
           <p>Presenter / UGC-style avatar for ads &amp; explainers.</p>
           <a class="stretch" href="https://lnkd.in/p/d-dq9mHc" rel="noopener">LinkedIn →</a>
         </div>
       </article>
-      <article class="card link-card">
+      <article class="card link-card" data-category="other">
         <div class="body">
+          <span class="cat-label">Other Work</span>
           <h3>Upwork profile intro</h3>
           <p>Freelance reel — AI video &amp; engineering.</p>
           <a class="stretch" href="https://www.youtube.com/watch?v=8j9x_qz_kZM" rel="noopener">YouTube →</a>
@@ -208,8 +268,34 @@
 
     <footer>
       AI-assisted production with human review. Assets owned or licensed for portfolio display.
-      Update samples in <code>portfolio/11s-ads/samples/</code> before festival / award registration.
+      Custom domain: <a href="https://videoads.abhishekjha.com" style="color: var(--accent2);">videoads.abhishekjha.com</a>.
+      Update samples in <code>samples/</code> before festival / award registration.
     </footer>
   </div>
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll(".filter");
+      var cards = document.querySelectorAll("#portfolio-grid .card");
+      var hint = document.getElementById("empty-hint");
+
+      function applyFilter(key) {
+        var visible = 0;
+        cards.forEach(function (card) {
+          var show = key === "all" || card.getAttribute("data-category") === key;
+          card.classList.toggle("is-hidden", !show);
+          if (show) visible += 1;
+        });
+        hint.classList.toggle("visible", visible === 0);
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          buttons.forEach(function (b) { b.classList.remove("active"); });
+          btn.classList.add("active");
+          applyFilter(btn.getAttribute("data-filter"));
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
