@@ -43,6 +43,8 @@ See [CHROMA-AWARDS-SEASON-2.md](../../content-studio/CHROMA-AWARDS-SEASON-2.md).
 | Upwork intro | https://www.youtube.com/watch?v=8j9x_qz_kZM |
 | Oral care ads playlist | https://www.youtube.com/watch?v=WxtlKqkCukI&list=PLhViT_kHN8M6QIhtKVncLHnOG59hC4BZK |
 | Heaven's Perfume playlist | https://www.youtube.com/watch?v=evM4_KDCzE0&list=PLhViT_kHN8M7t_cySJnUbvZ4xwli6Snub |
+
+**On-site:** Oral care and Heaven's Perfume playlists render as horizontal carousels on `index.html` (hover preview, click lightbox). Data: `data/youtube-playlists.json`.
 | Angel Baby | https://lnkd.in/p/dquXTyvG |
 
 ## Linked

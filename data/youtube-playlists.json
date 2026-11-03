@@ -1,0 +1,28 @@
+{
+  "playlists": [
+    {
+      "id": "oral-care",
+      "title": "Oral care — 11s ads",
+      "description": "Vertical performance spots · OralG oral irrigator campaign.",
+      "youtubeListId": "PLhViT_kHN8M6QIhtKVncLHnOG59hC4BZK",
+      "videos": [
+        { "id": "WxtlKqkCukI", "title": "Tutorial Ad" },
+        { "id": "BCnAUNA0QRk", "title": "Scrollstopping Ad" },
+        { "id": "lcyIqLETHiM", "title": "AI Intro 2nd" },
+        { "id": "fxImS0oqz7U", "title": "Intro" }
+      ]
+    },
+    {
+      "id": "heavens-perfume",
+      "title": "Heaven's Perfume — ads",
+      "description": "Fragrance spec / paid-social cuts.",
+      "youtubeListId": "PLhViT_kHN8M7t_cySJnUbvZ4xwli6Snub",
+      "videos": [
+        { "id": "evM4_KDCzE0", "title": "UGC Ad" },
+        { "id": "cZi0PAKls7g", "title": "Intro 2nd" },
+        { "id": "-yHFeEHFZzU", "title": "Intro" },
+        { "id": "grqM5HvvfwQ", "title": "Interview Ad" }
+      ]
+    }
+  ]
+}
