@@ -3,8 +3,6 @@
 
   var PLAYLIST_URL = "data/youtube-playlists.json";
   var THUMB = "https://i.ytimg.com/vi/VIDEO_ID/mqdefault.jpg";
-  var activeHoverId = null;
-  var tilePlayers = Object.create(null);
   var tileTimes = Object.create(null);
   var modalPlayer = null;
   var modalVideoId = null;
@@ -14,6 +12,32 @@
 
   function thumbUrl(videoId) {
     return THUMB.replace("VIDEO_ID", videoId);
+  }
+
+  function canHoverPreview() {
+    return !window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  }
+
+  function buildEmbedUrl(videoId, opts) {
+    var start = Math.max(0, Math.floor(opts.start || 0));
+    var q =
+      "autoplay=" +
+      (opts.autoplay ? "1" : "0") +
+      "&mute=" +
+      (opts.mute ? "1" : "0") +
+      "&controls=" +
+      (opts.controls ? "1" : "0") +
+      "&modestbranding=1&rel=0&playsinline=1&enablejsapi=1" +
+      "&origin=" +
+      encodeURIComponent(window.location.origin) +
+      "&start=" +
+      start;
+    return (
+      "https://www.youtube.com/embed/" +
+      encodeURIComponent(videoId) +
+      "?" +
+      q
+    );
   }
 
   function loadYouTubeApi(callback) {
@@ -36,95 +60,65 @@
     document.head.appendChild(tag);
   }
 
-  function pauseOtherTiles(exceptKey) {
-    Object.keys(tilePlayers).forEach(function (key) {
-      if (key === exceptKey) return;
-      var entry = tilePlayers[key];
-      if (!entry || !entry.player) return;
-      try {
-        tileTimes[key] = entry.player.getCurrentTime();
-        entry.player.pauseVideo();
-      } catch (e) {
-        /* player not ready */
-      }
-    });
-  }
-
-  function isPlayerReady(player) {
-    return (
-      player &&
-      typeof player.getPlayerState === "function" &&
-      player.getPlayerState() !== -1
-    );
-  }
-
-  function ensureTilePlayer(tile, videoId, autoplay) {
+  function commitPreviewTime(tile) {
     var key = tile.dataset.tileKey;
+    if (!key || tile.dataset.previewHoverAt == null) return;
+    var start = parseFloat(tile.dataset.previewStart, 10) || 0;
+    var hoverAt = parseFloat(tile.dataset.previewHoverAt, 10);
+    if (!hoverAt) return;
+    tileTimes[key] = start + (Date.now() - hoverAt) / 1000;
+  }
+
+  function stopTilePreview(tile) {
+    commitPreviewTime(tile);
     var mount = tile.querySelector(".yt-tile-player");
-    if (!mount) return null;
-    var startAt = tileTimes[key] || 0;
+    if (mount) mount.innerHTML = "";
+    tile.classList.remove("is-playing");
+    delete tile.dataset.previewStart;
+    delete tile.dataset.previewHoverAt;
+  }
 
-    tile.classList.add("is-playing");
-
-    if (tilePlayers[key] && tilePlayers[key].player) {
-      var existing = tilePlayers[key].player;
-      if (isPlayerReady(existing)) {
-        if (startAt > 0) existing.seekTo(startAt, true);
-        if (autoplay) existing.playVideo();
-      }
-      return existing;
-    }
-
-    tilePlayers[key] = { player: null, videoId: videoId };
-    tilePlayers[key].player = new YT.Player(mount, {
-      height: "100%",
-      width: "100%",
-      videoId: videoId,
-      playerVars: {
-        autoplay: autoplay ? 1 : 0,
-        mute: 1,
-        controls: 0,
-        modestbranding: 1,
-        rel: 0,
-        playsinline: 1,
-        start: Math.floor(startAt),
-        enablejsapi: 1,
-        origin: window.location.origin,
-      },
-      events: {
-        onReady: function (ev) {
-          if (startAt > 0) ev.target.seekTo(startAt, true);
-          if (autoplay) ev.target.playVideo();
-        },
-      },
+  function pauseOtherTiles(exceptKey) {
+    document.querySelectorAll(".yt-tile.is-playing").forEach(function (tile) {
+      if (tile.dataset.tileKey === exceptKey) return;
+      stopTilePreview(tile);
     });
-    return tilePlayers[key].player;
+  }
+
+  function startTilePreview(tile) {
+    var videoId = tile.dataset.videoId;
+    var key = tile.dataset.tileKey;
+    var startAt = tileTimes[key] || 0;
+    var mount = tile.querySelector(".yt-tile-player");
+    if (!mount) return;
+
+    tile.dataset.previewStart = String(startAt);
+    tile.dataset.previewHoverAt = String(Date.now());
+    tile.classList.add("is-playing");
+    mount.innerHTML = "";
+
+    var iframe = document.createElement("iframe");
+    iframe.setAttribute("allowfullscreen", "");
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.title = tile.dataset.title || "Video preview";
+    iframe.src = buildEmbedUrl(videoId, {
+      autoplay: 1,
+      mute: 1,
+      controls: 0,
+      start: startAt,
+    });
+    mount.appendChild(iframe);
   }
 
   function onTileEnter(tile) {
-    if (window.matchMedia("(hover: none)").matches) return;
-    var videoId = tile.dataset.videoId;
-    var key = tile.dataset.tileKey;
-    activeHoverId = key;
-    loadYouTubeApi(function () {
-      pauseOtherTiles(key);
-      ensureTilePlayer(tile, videoId, true);
-    });
+    if (!canHoverPreview()) return;
+    pauseOtherTiles(tile.dataset.tileKey);
+    startTilePreview(tile);
   }
 
   function onTileLeave(tile) {
-    var key = tile.dataset.tileKey;
-    if (activeHoverId === key) activeHoverId = null;
-    var entry = tilePlayers[key];
-    if (entry && entry.player && isPlayerReady(entry.player)) {
-      try {
-        tileTimes[key] = entry.player.getCurrentTime();
-        entry.player.pauseVideo();
-      } catch (e) {
-        /* ignore */
-      }
-    }
-    tile.classList.remove("is-playing");
+    stopTilePreview(tile);
   }
 
   function closeModal() {
@@ -133,27 +127,31 @@
     overlay.hidden = true;
     document.body.classList.remove("yt-modal-open");
     if (modalPlayer && modalVideoId) {
-      tileTimes[modalVideoId] = modalPlayer.getCurrentTime();
-    }
-    if (modalPlayer && modalPlayer.pauseVideo) {
-      modalPlayer.pauseVideo();
-    }
-  }
-
-  function openModal(tile) {
-    var videoId = tile.dataset.videoId;
-    var key = tile.dataset.tileKey;
-    var title = tile.dataset.title || "";
-    var startAt = tileTimes[key] || 0;
-    if (tilePlayers[key] && tilePlayers[key].player && isPlayerReady(tilePlayers[key].player)) {
       try {
-        startAt = tilePlayers[key].player.getCurrentTime();
-        tileTimes[key] = startAt;
-        tilePlayers[key].player.pauseVideo();
+        if (typeof modalPlayer.getCurrentTime === "function") {
+          tileTimes[modalVideoId] = modalPlayer.getCurrentTime();
+        }
       } catch (e) {
         /* ignore */
       }
     }
+    if (modalPlayer && modalPlayer.pauseVideo) {
+      try {
+        modalPlayer.pauseVideo();
+      } catch (e) {
+        /* ignore */
+      }
+    }
+  }
+
+  function openModal(tile) {
+    commitPreviewTime(tile);
+    stopTilePreview(tile);
+
+    var videoId = tile.dataset.videoId;
+    var key = tile.dataset.tileKey;
+    var title = tile.dataset.title || "";
+    var startAt = tileTimes[key] || 0;
 
     var overlay = document.getElementById("yt-lightbox");
     var titleEl = document.getElementById("yt-lightbox-title");
@@ -176,6 +174,8 @@
       }
       mount.innerHTML = "";
       modalPlayer = new YT.Player(mount, {
+        height: "100%",
+        width: "100%",
         videoId: videoId,
         playerVars: {
           autoplay: 1,
@@ -239,13 +239,16 @@
     track.className = "carousel-track";
     track.setAttribute("role", "list");
 
-    playlist.videos.forEach(function (video, index) {
+    playlist.videos.forEach(function (video) {
       var tileKey = playlist.id + "-" + video.id;
       var tile = document.createElement("div");
       tile.className = "yt-tile";
       tile.tabIndex = 0;
       tile.setAttribute("role", "listitem");
-      tile.setAttribute("aria-label", video.title + " — hover preview, click to expand");
+      tile.setAttribute(
+        "aria-label",
+        video.title + " — hover preview, click to expand"
+      );
       tile.dataset.videoId = video.id;
       tile.dataset.tileKey = tileKey;
       tile.dataset.title = video.title;
@@ -334,7 +337,6 @@
         (data.playlists || []).forEach(function (pl) {
           root.appendChild(buildPlaylistSection(pl));
         });
-        loadYouTubeApi(function () {});
       })
       .catch(function () {
         root.innerHTML =
