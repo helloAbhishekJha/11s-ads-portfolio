@@ -50,16 +50,35 @@
     });
   }
 
+  function isPlayerReady(player) {
+    return (
+      player &&
+      typeof player.getPlayerState === "function" &&
+      player.getPlayerState() !== -1
+    );
+  }
+
   function ensureTilePlayer(tile, videoId, autoplay) {
     var key = tile.dataset.tileKey;
-    if (tilePlayers[key] && tilePlayers[key].player) {
-      return tilePlayers[key].player;
-    }
     var mount = tile.querySelector(".yt-tile-player");
     if (!mount) return null;
-    tilePlayers[key] = { player: null, videoId: videoId };
     var startAt = tileTimes[key] || 0;
+
+    tile.classList.add("is-playing");
+
+    if (tilePlayers[key] && tilePlayers[key].player) {
+      var existing = tilePlayers[key].player;
+      if (isPlayerReady(existing)) {
+        if (startAt > 0) existing.seekTo(startAt, true);
+        if (autoplay) existing.playVideo();
+      }
+      return existing;
+    }
+
+    tilePlayers[key] = { player: null, videoId: videoId };
     tilePlayers[key].player = new YT.Player(mount, {
+      height: "100%",
+      width: "100%",
       videoId: videoId,
       playerVars: {
         autoplay: autoplay ? 1 : 0,
@@ -74,13 +93,8 @@
       },
       events: {
         onReady: function (ev) {
-          tile.classList.add("is-playing");
-          if (autoplay) {
-            ev.target.playVideo();
-          }
-          if (startAt > 0) {
-            ev.target.seekTo(startAt, true);
-          }
+          if (startAt > 0) ev.target.seekTo(startAt, true);
+          if (autoplay) ev.target.playVideo();
         },
       },
     });
@@ -95,16 +109,6 @@
     loadYouTubeApi(function () {
       pauseOtherTiles(key);
       ensureTilePlayer(tile, videoId, true);
-      var entry = tilePlayers[key];
-      if (entry && entry.player && entry.player.playVideo) {
-        try {
-          var t = tileTimes[key];
-          if (t > 0) entry.player.seekTo(t, true);
-          entry.player.playVideo();
-        } catch (e) {
-          /* not ready yet */
-        }
-      }
     });
   }
 
@@ -112,7 +116,7 @@
     var key = tile.dataset.tileKey;
     if (activeHoverId === key) activeHoverId = null;
     var entry = tilePlayers[key];
-    if (entry && entry.player && entry.player.getCurrentTime) {
+    if (entry && entry.player && isPlayerReady(entry.player)) {
       try {
         tileTimes[key] = entry.player.getCurrentTime();
         entry.player.pauseVideo();
@@ -141,7 +145,7 @@
     var key = tile.dataset.tileKey;
     var title = tile.dataset.title || "";
     var startAt = tileTimes[key] || 0;
-    if (tilePlayers[key] && tilePlayers[key].player) {
+    if (tilePlayers[key] && tilePlayers[key].player && isPlayerReady(tilePlayers[key].player)) {
       try {
         startAt = tilePlayers[key].player.getCurrentTime();
         tileTimes[key] = startAt;
@@ -237,10 +241,11 @@
 
     playlist.videos.forEach(function (video, index) {
       var tileKey = playlist.id + "-" + video.id;
-      var tile = document.createElement("button");
-      tile.type = "button";
+      var tile = document.createElement("div");
       tile.className = "yt-tile";
+      tile.tabIndex = 0;
       tile.setAttribute("role", "listitem");
+      tile.setAttribute("aria-label", video.title + " — hover preview, click to expand");
       tile.dataset.videoId = video.id;
       tile.dataset.tileKey = tileKey;
       tile.dataset.title = video.title;
@@ -248,7 +253,7 @@
         '<span class="yt-tile-thumb" style="background-image:url(\'' +
         thumbUrl(video.id) +
         '\')"></span>' +
-        '<span class="yt-tile-player" aria-hidden="true"></span>' +
+        '<div class="yt-tile-player" aria-hidden="true"></div>' +
         '<span class="yt-tile-label">' +
         escapeHtml(video.title) +
         "</span>" +
@@ -329,6 +334,7 @@
         (data.playlists || []).forEach(function (pl) {
           root.appendChild(buildPlaylistSection(pl));
         });
+        loadYouTubeApi(function () {});
       })
       .catch(function () {
         root.innerHTML =
